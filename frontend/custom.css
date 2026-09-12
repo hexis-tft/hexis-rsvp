@@ -28,7 +28,7 @@
   margin: 0 auto 4px !important;
   font-family: "Cormorant Garamond", Georgia, serif !important;
   font-style: italic !important;
-  font-size: clamp(2.5rem, 5.1vw, 3.9rem) !important;
+  font-size: clamp(2.3rem, 4.6vw, 3.5rem) !important;
   line-height: 1 !important;
   font-weight: 500 !important;
   color: #fff !important;
@@ -209,7 +209,7 @@
   }
 
   .hero > .event-title-art {
-    font-size: clamp(2.2rem, 10vw, 3rem) !important;
+    font-size: clamp(2rem, 9vw, 2.7rem) !important;
     margin-bottom: 0 !important;
   }
 
