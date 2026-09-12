@@ -125,7 +125,13 @@
   }
 
   function renderStats(data) {
-    const entries = [["Convites", data.invites], ["Pendentes", data.pending], ["Confirmados", data.confirmedPeople], ["Recusados", data.declinedPeople], ["Presentes", data.checkedInPeople]];
+    const entries = [
+      ["Convites", data.invites],
+      ["Pessoas", data.totalPeople],
+      ["Confirmados", data.confirmedPeople],
+      ["Recusados", data.declinedPeople],
+      ["Presentes", data.checkedInPeople]
+    ];
     $("#stats").innerHTML = entries.map(([label, value]) => `<div class="stat"><strong>${value}</strong><span>${label}</span></div>`).join("");
   }
 
@@ -148,7 +154,10 @@
         <td>${escapeHtml(g.status)}</td>
         <td>${g.people}</td>
         <td>${escapeHtml(g.checkin)}</td>
-        ${isGestor() ? `<td><button class="table-action edit-guest" data-id="${escapeHtml(g.id)}" type="button">Editar</button></td>` : ""}
+        <td>
+          <button class="table-action edit-phone" data-id="${escapeHtml(g.id)}" type="button">WhatsApp</button>
+          ${isGestor() ? `<button class="table-action edit-guest" data-id="${escapeHtml(g.id)}" type="button">Editar</button>` : ""}
+        </td>
       </tr>`).join("");
   }
 
@@ -293,7 +302,24 @@
   $("#start-rsvp").addEventListener("click", () => show("phone"));
   $("#home-button").addEventListener("click", () => show("home"));
   $("#admin-button").addEventListener("click", () => state.adminSession ? loadDashboard() : show("admin-login"));
-  $$('[data-back]').forEach((button) => button.addEventListener("click", () => show(button.dataset.back)));
+  $$('[data-back]').forEach((button) => {
+    button.addEventListener("click", async () => {
+      const target = button.dataset.back;
+      if (target === "dashboard" && state.adminSession) {
+        await loadDashboard();
+        return;
+      }
+      if (target === "guests" && state.adminSession) {
+        await loadGuests();
+        return;
+      }
+      if (target === "users" && state.adminSession && isGestor()) {
+        await loadUsers();
+        return;
+      }
+      show(target);
+    });
+  });
 
   $("#phone").addEventListener("input", (event) => { event.target.value = phoneMask(event.target.value); });
   $("#guest-phone").addEventListener("input", (event) => { event.target.value = phoneMask(event.target.value); });
@@ -339,10 +365,33 @@
   $("#scan-button").addEventListener("click", startScanner);
   $("#guest-search").addEventListener("input", (event) => renderGuests(event.target.value));
 
-  $("#guest-table").addEventListener("click", (event) => {
-    const button = event.target.closest(".edit-guest");
-    if (!button) return;
-    const guest = state.guests.find((g) => g.id === button.dataset.id);
+  $("#guest-table").addEventListener("click", async (event) => {
+    const phoneButton = event.target.closest(".edit-phone");
+    if (phoneButton) {
+      const guest = state.guests.find((g) => g.id === phoneButton.dataset.id);
+      if (!guest) return;
+
+      const informed = window.prompt(
+        `WhatsApp de ${guest.name}`,
+        guest.phone ? formatPhone(guest.phone) : ""
+      );
+
+      if (informed === null) return;
+
+      const phone = String(informed).replace(/\D/g, "");
+      if (phone.length !== 10 && phone.length !== 11) {
+        return toast("Informe um WhatsApp válido, com DDD.", true);
+      }
+
+      await rpc("setPhone", { id: guest.id, phone }, true);
+      toast("WhatsApp atualizado.");
+      await loadGuests();
+      return;
+    }
+
+    const editButton = event.target.closest(".edit-guest");
+    if (!editButton) return;
+    const guest = state.guests.find((g) => g.id === editButton.dataset.id);
     if (guest) resetGuestEditor(guest);
   });
 
