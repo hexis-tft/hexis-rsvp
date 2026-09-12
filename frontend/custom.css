@@ -13,16 +13,24 @@
   object-fit: contain;
 }
 
+/* Mantém oculto o título dinâmico usado apenas pela configuração do evento. */
+#event-name {
+  display: none !important;
+}
+
+/* Preserva exatamente a aparência atual do primeiro “Aniversário”; só reduz o tamanho. */
 .event-title-art {
-  margin: 0 auto 4px;
-  font-size: clamp(2.45rem, 5.6vw, 4.15rem);
+  margin: 0 auto 2px;
+  font-size: clamp(2.15rem, 4.9vw, 3.65rem);
   line-height: .95;
   font-weight: 600;
 }
 
+/* A assinatura passa a ocupar melhor a largura útil do quadro. */
 .nati-signature {
   display: block;
-  width: min(520px, 86%);
+  width: min(640px, 98%);
+  max-width: 100%;
   height: auto;
   margin: 0 auto 18px;
 }
@@ -38,12 +46,13 @@
   }
 
   .event-title-art {
-    font-size: clamp(2.15rem, 10vw, 3.15rem);
+    font-size: clamp(1.95rem, 8.7vw, 2.85rem);
     margin-bottom: 0;
   }
 
   .nati-signature {
-    width: min(390px, 94%);
+    width: 100%;
+    max-width: 430px;
     margin-bottom: 14px;
   }
 }
