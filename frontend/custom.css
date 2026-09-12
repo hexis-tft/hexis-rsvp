@@ -13,26 +13,44 @@
   object-fit: contain;
 }
 
-/* Mantém oculto o título dinâmico usado apenas pela configuração do evento. */
+/* O nome dinâmico existe apenas para o bootstrap e nunca deve aparecer visualmente. */
 #event-name {
+  display: none !important;
+  visibility: hidden !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* ÚNICO título visual da capa. */
+.hero > .event-title-art {
+  display: block !important;
+  margin: 0 auto 4px !important;
+  font-family: "Great Vibes", "Segoe Script", "Brush Script MT", cursive !important;
+  font-size: clamp(2.5rem, 5.1vw, 3.9rem) !important;
+  line-height: 1 !important;
+  font-weight: 400 !important;
+  color: #fff !important;
+}
+
+/* Blindagem contra qualquer duplicação acidental de versões antigas do HTML. */
+.hero > .event-title-art ~ .event-title-art {
   display: none !important;
 }
 
-/* Preserva exatamente a aparência atual do primeiro “Aniversário”; só reduz o tamanho. */
-.event-title-art {
-  margin: 0 auto 2px;
-  font-size: clamp(2.15rem, 4.9vw, 3.65rem);
-  line-height: .95;
-  font-weight: 600;
+/* ÚNICA assinatura Nati Neri. */
+.hero > .nati-signature {
+  display: block !important;
+  width: min(640px, 98%) !important;
+  max-width: 100% !important;
+  height: auto !important;
+  margin: 0 auto 18px !important;
 }
 
-/* A assinatura passa a ocupar melhor a largura útil do quadro. */
-.nati-signature {
-  display: block;
-  width: min(640px, 98%);
-  max-width: 100%;
-  height: auto;
-  margin: 0 auto 18px;
+.hero > .nati-signature ~ .nati-signature {
+  display: none !important;
 }
 
 @media (max-width: 740px) {
@@ -45,14 +63,14 @@
     height: 48px;
   }
 
-  .event-title-art {
-    font-size: clamp(1.95rem, 8.7vw, 2.85rem);
-    margin-bottom: 0;
+  .hero > .event-title-art {
+    font-size: clamp(2.25rem, 9vw, 3.05rem) !important;
+    margin-bottom: 2px !important;
   }
 
-  .nati-signature {
-    width: 100%;
-    max-width: 430px;
-    margin-bottom: 14px;
+  .hero > .nati-signature {
+    width: 100% !important;
+    max-width: 430px !important;
+    margin-bottom: 14px !important;
   }
 }
