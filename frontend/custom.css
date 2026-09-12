@@ -49,7 +49,7 @@
   display: none !important;
 }
 
-/* Mesma família do texto Gestor/Administrador para os títulos administrativos. */
+/* Mesma família do texto Gestor/Administrador para os títulos administrativos, sem negrito. */
 #admin-welcome,
 #view-guests h2,
 #guest-editor-title,
@@ -57,7 +57,7 @@
 #view-scan h2,
 #user-editor-title {
   font-family: Montserrat, ui-sans-serif, system-ui, sans-serif !important;
-  font-weight: 800 !important;
+  font-weight: 400 !important;
 }
 
 /* Preserva o tamanho atual do nome do usuário. */
