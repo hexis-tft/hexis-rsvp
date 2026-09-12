@@ -13,7 +13,6 @@
   object-fit: contain;
 }
 
-/* O nome dinâmico existe apenas para o bootstrap e nunca deve aparecer visualmente. */
 #event-name {
   display: none !important;
   visibility: hidden !important;
@@ -24,7 +23,6 @@
   padding: 0 !important;
 }
 
-/* ÚNICO título visual da capa. */
 .hero > .event-title-art {
   display: block !important;
   margin: 0 auto 4px !important;
@@ -35,12 +33,10 @@
   color: #fff !important;
 }
 
-/* Blindagem contra qualquer duplicação acidental de versões antigas do HTML. */
 .hero > .event-title-art ~ .event-title-art {
   display: none !important;
 }
 
-/* ÚNICA assinatura Nati Neri. */
 .hero > .nati-signature {
   display: block !important;
   width: min(640px, 98%) !important;
@@ -51,6 +47,43 @@
 
 .hero > .nati-signature ~ .nati-signature {
   display: none !important;
+}
+
+/* Mesma família do texto Gestor/Administrador para os títulos administrativos. */
+#admin-welcome,
+#view-guests h2,
+#guest-editor-title,
+#view-users h2,
+#view-scan h2,
+#user-editor-title {
+  font-family: Montserrat, ui-sans-serif, system-ui, sans-serif !important;
+  font-weight: 800 !important;
+}
+
+/* Preserva o tamanho atual do nome do usuário. */
+#admin-welcome {
+  font-size: clamp(2.2rem, 5vw, 3.4rem) !important;
+  line-height: 1.02 !important;
+}
+
+/* Usuários do sistema: título em uma linha e botão mais compacto. */
+#view-users .list-heading > div {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+#view-users .list-heading h2 {
+  white-space: nowrap;
+}
+
+#new-user-button {
+  width: auto !important;
+  min-width: 0 !important;
+  min-height: 42px !important;
+  padding: 8px 14px !important;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: .82rem;
 }
 
 @media (max-width: 740px) {
@@ -72,5 +105,20 @@
     width: 100% !important;
     max-width: 430px !important;
     margin-bottom: 14px !important;
+  }
+
+  #view-users .list-heading {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  #view-users .list-heading h2 {
+    font-size: clamp(1.65rem, 6vw, 2.2rem) !important;
+  }
+
+  #new-user-button {
+    padding: 7px 10px !important;
+    font-size: .75rem;
   }
 }
