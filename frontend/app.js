@@ -52,8 +52,8 @@
 
   function formatPhone(value) {
     const digits = String(value || "").replace(/\D/g, "");
-    if (digits.length === 11) return `(${digits.slice(0,2)}) ${digits.slice(2,7)}-${digits.slice(7)}`;
-    if (digits.length === 10) return `(${digits.slice(0,2)}) ${digits.slice(2,6)}-${digits.slice(6)}`;
+    if (digits.length === 11) return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+    if (digits.length === 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
     return value || "—";
   }
 
@@ -275,11 +275,36 @@
     await loadUsers();
   }
 
+  function quantityButtons(result, token) {
+    if (result.complete || result.remaining <= 0) {
+      return `<p class="notice"><strong>ENTRADA COMPLETA</strong><br>${result.admitted} de ${result.authorized} pessoas registradas.</p>`;
+    }
+    return `<div class="checkin-quantity">
+      <p><strong>Quantas pessoas estão entrando agora?</strong></p>
+      <div class="invite-actions">
+        ${Array.from({ length: result.remaining }, (_, i) => i + 1)
+          .map((quantity) => `<button class="secondary confirm-entry" data-token="${escapeHtml(token)}" data-quantity="${quantity}" type="button">${quantity}</button>`)
+          .join("")}
+      </div>
+    </div>`;
+  }
+
   async function inspectToken(raw) {
     const token = raw.trim().replace(/^HX1:/i, "");
     if (!token) return;
     const result = await rpc("scanQr", { token }, true);
-    $("#scan-result").innerHTML = `<section class="scan-card"><span class="status ${result.used ? "recusado" : "confirmado"}">${result.used ? "JÁ UTILIZADO" : "VÁLIDO"}</span><h3>${escapeHtml(result.name)}</h3><p>${result.people} pessoa${result.people === 1 ? "" : "s"}</p>${result.used ? `<p class="muted">Entrada: ${escapeHtml(formatDateTime(result.checkinAt))}</p>` : `<button class="primary confirm-entry" data-token="${escapeHtml(token)}" type="button">Confirmar entrada</button>`}</section>`;
+    const statusClass = result.complete ? "recusado" : "confirmado";
+    const statusText = result.complete ? "ENTRADA COMPLETA" : (result.admitted > 0 ? "ENTRADA PARCIAL" : "VÁLIDO");
+    $("#scan-result").innerHTML = `
+      <section class="scan-card">
+        <span class="status ${statusClass}">${statusText}</span>
+        <h3>${escapeHtml(result.name)}</h3>
+        <p>Convite para <strong>${result.authorized}</strong> pessoa${result.authorized === 1 ? "" : "s"}</p>
+        <p>Já entraram: <strong>${result.admitted}</strong></p>
+        <p>Ainda podem entrar: <strong>${result.remaining}</strong></p>
+        ${result.checkinAt ? `<p class="muted">Último registro: ${escapeHtml(formatDateTime(result.checkinAt))}</p>` : ""}
+        ${quantityButtons(result, token)}
+      </section>`;
   }
 
   async function startScanner() {
@@ -370,19 +395,10 @@
     if (phoneButton) {
       const guest = state.guests.find((g) => g.id === phoneButton.dataset.id);
       if (!guest) return;
-
-      const informed = window.prompt(
-        `WhatsApp de ${guest.name}`,
-        guest.phone ? formatPhone(guest.phone) : ""
-      );
-
+      const informed = window.prompt(`WhatsApp de ${guest.name}`, guest.phone ? formatPhone(guest.phone) : "");
       if (informed === null) return;
-
       const phone = String(informed).replace(/\D/g, "");
-      if (phone.length !== 10 && phone.length !== 11) {
-        return toast("Informe um WhatsApp válido, com DDD.", true);
-      }
-
+      if (phone.length !== 10 && phone.length !== 11) return toast("Informe um WhatsApp válido, com DDD.", true);
       await rpc("setPhone", { id: guest.id, phone }, true);
       toast("WhatsApp atualizado.");
       await loadGuests();
@@ -422,8 +438,10 @@
   $("#scan-result").addEventListener("click", async (event) => {
     const button = event.target.closest(".confirm-entry");
     if (!button) return;
-    const result = await rpc("confirmCheckin", { token: button.dataset.token }, true);
-    toast("Entrada confirmada.");
+    const quantity = Number(button.dataset.quantity || 0);
+    if (!Number.isInteger(quantity) || quantity < 1) return toast("Quantidade inválida.", true);
+    const result = await rpc("confirmCheckin", { token: button.dataset.token, quantity }, true);
+    toast(`${quantity} pessoa${quantity === 1 ? "" : "s"} registrada${quantity === 1 ? "" : "s"}.`);
     await inspectToken(button.dataset.token);
     renderStats(result.stats);
   });
