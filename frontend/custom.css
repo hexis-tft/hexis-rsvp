@@ -49,8 +49,10 @@
   display: none !important;
 }
 
-/* Mesma família do texto Gestor/Administrador para os títulos administrativos, sem negrito. */
+/* Família padrão dos títulos internos do app. */
 #admin-welcome,
+#view-phone h2,
+#view-invites h2,
 #view-guests h2,
 #guest-editor-title,
 #view-users h2,
@@ -64,6 +66,26 @@
 #admin-welcome {
   font-size: clamp(2.2rem, 5vw, 3.4rem) !important;
   line-height: 1.02 !important;
+}
+
+/* Organização visual dos nomes de cada convite. */
+.invite .invite-people-count {
+  display: block;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.invite .invite-name-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  color: var(--ink);
+}
+
+.invite .invite-name-list li {
+  margin: 5px 0;
+  line-height: 1.4;
 }
 
 /* Usuários do sistema: título em uma linha e botão mais compacto. */
