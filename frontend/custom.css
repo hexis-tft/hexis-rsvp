@@ -33,10 +33,6 @@
   color: #fff !important;
 }
 
-.hero > .event-title-art ~ .event-title-art {
-  display: none !important;
-}
-
 .hero > .nati-signature {
   display: block !important;
   width: min(640px, 98%) !important;
@@ -45,50 +41,110 @@
   margin: 0 auto 18px !important;
 }
 
-.hero > .nati-signature ~ .nati-signature {
-  display: none !important;
-}
-
-/* Família padrão dos títulos internos do app. */
-#admin-welcome,
-#view-phone h2,
-#view-invites h2,
-#view-guests h2,
-#guest-editor-title,
-#view-users h2,
-#view-scan h2,
-#user-editor-title {
+/* Padrão único de títulos internos: Montserrat, peso normal. */
+.view:not(#view-home) h2,
+#admin-welcome {
   font-family: Montserrat, ui-sans-serif, system-ui, sans-serif !important;
   font-weight: 400 !important;
 }
 
-/* Preserva o tamanho atual do nome do usuário. */
 #admin-welcome {
   font-size: clamp(2.2rem, 5vw, 3.4rem) !important;
   line-height: 1.02 !important;
 }
 
-/* Organização visual dos nomes de cada convite. */
-.invite .invite-people-count {
-  display: block;
-  margin-top: 8px;
-  margin-bottom: 8px;
+/* Lista de pessoas no convite. */
+.invite-party {
+  margin: 12px 0 4px;
+}
+
+.invite-people-count {
+  margin: 0 0 8px;
   color: var(--muted);
   font-weight: 600;
 }
 
-.invite .invite-name-list {
+.invite-name-list {
   margin: 0;
-  padding-left: 1.2rem;
+  padding-left: 1.25rem;
   color: var(--ink);
+  display: grid;
+  gap: 6px;
 }
 
-.invite .invite-name-list li {
-  margin: 5px 0;
-  line-height: 1.4;
+.invite-name-list li {
+  line-height: 1.35;
 }
 
-/* Usuários do sistema: título em uma linha e botão mais compacto. */
+/* Toasted/modal único do app. */
+.app-toast-layer[hidden] {
+  display: none !important;
+}
+
+.app-toast-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  padding: 18px;
+  background: rgba(10, 1, 19, .58);
+  backdrop-filter: blur(5px);
+}
+
+.app-toast-card {
+  width: min(100%, 470px);
+  margin-bottom: max(10px, env(safe-area-inset-bottom));
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(223,216,230,.34);
+  background: linear-gradient(145deg, rgba(67,20,100,.98), rgba(30,6,53,.99));
+  box-shadow: 0 26px 80px rgba(4,0,10,.58), inset 0 1px 0 rgba(255,255,255,.08);
+  animation: appToastIn .18s ease-out;
+}
+
+@keyframes appToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.app-toast-card h3 {
+  margin: 0 0 10px;
+  font-family: Montserrat, ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: #fff;
+}
+
+.app-toast-text {
+  margin: 0 0 18px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.app-toast-card form {
+  margin-top: 0;
+}
+
+.app-toast-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.app-toast-actions button {
+  width: 100%;
+}
+
+/* Usuários do sistema: título em uma linha e botão compacto. */
 #view-users .list-heading > div {
   min-width: 0;
   flex: 1 1 auto;
@@ -108,25 +164,109 @@
   font-size: .82rem;
 }
 
+/* Desktop */
+@media (min-width: 741px) {
+  .invite-actions.checkin-buttons {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* MOBILE FIRST: prioridade do projeto. */
 @media (max-width: 740px) {
+  .topbar {
+    min-height: 58px;
+    padding: 0 14px;
+  }
+
   .brand-art {
-    min-width: 118px;
+    min-width: 112px;
   }
 
   .brand-art img {
-    width: 118px;
-    height: 48px;
+    width: 112px;
+    height: 46px;
+  }
+
+  #admin-button {
+    font-size: .78rem;
+  }
+
+  .shell {
+    width: min(100% - 18px, 1040px);
+    margin: 8px auto 36px;
+  }
+
+  .card {
+    width: 100%;
+    padding: 24px 18px;
+    border-radius: 22px;
   }
 
   .hero > .event-title-art {
-    font-size: clamp(2.25rem, 9vw, 3.05rem) !important;
-    margin-bottom: 2px !important;
+    font-size: clamp(2.2rem, 10vw, 3rem) !important;
+    margin-bottom: 0 !important;
   }
 
   .hero > .nati-signature {
     width: 100% !important;
     max-width: 430px !important;
-    margin-bottom: 14px !important;
+    margin: 0 auto 12px !important;
+  }
+
+  .event-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 24px 0;
+  }
+
+  .event-grid .wide {
+    grid-column: auto;
+  }
+
+  .primary,
+  .secondary {
+    min-height: 52px;
+  }
+
+  .view:not(#view-home) h2,
+  #admin-welcome {
+    line-height: 1.12 !important;
+  }
+
+  .admin-heading {
+    align-items: flex-start;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat strong {
+    font-size: 1.55rem;
+  }
+
+  .admin-actions,
+  .invite-actions,
+  .form-grid.two,
+  .app-toast-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .list-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .list-tools {
+    width: 100%;
+    min-width: 0;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .list-tools input {
+    min-width: 0;
+    width: 100%;
   }
 
   #view-users .list-heading {
@@ -136,11 +276,129 @@
   }
 
   #view-users .list-heading h2 {
-    font-size: clamp(1.65rem, 6vw, 2.2rem) !important;
+    font-size: clamp(1.55rem, 6.4vw, 2.05rem) !important;
   }
 
   #new-user-button {
-    padding: 7px 10px !important;
-    font-size: .75rem;
+    padding: 7px 9px !important;
+    font-size: .72rem;
+    min-height: 38px !important;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .companion-row {
+    grid-template-columns: 1fr;
+  }
+
+  .remove-companion {
+    text-align: left;
+    padding: 0;
+  }
+
+  .qr {
+    width: min(246px, 82vw);
+    min-height: 0;
+    aspect-ratio: 1;
+  }
+
+  .reader {
+    width: 100%;
+  }
+
+  .checkin-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px;
+  }
+
+  .checkin-buttons .secondary {
+    min-height: 48px;
+    padding: 10px 8px;
+  }
+
+  .app-toast-layer {
+    padding: 12px;
+  }
+
+  .app-toast-card {
+    padding: 19px;
+    border-radius: 20px;
+  }
+
+  /* Tabelas viram cards no celular. */
+  .table-wrap {
+    overflow: visible;
+    margin-top: 16px;
+  }
+
+  table {
+    min-width: 0;
+    width: 100%;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody {
+    display: grid;
+    gap: 12px;
+  }
+
+  tbody tr {
+    display: block;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 12px 14px;
+    background: rgba(255,255,255,.045);
+  }
+
+  tbody td {
+    display: grid;
+    grid-template-columns: minmax(88px, 36%) 1fr;
+    gap: 10px;
+    align-items: start;
+    white-space: normal;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+  }
+
+  tbody td:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    color: var(--silver);
+    font-size: .7rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 600;
+  }
+
+  tbody td[data-label="Ações"] {
+    grid-template-columns: 1fr;
+  }
+
+  tbody td[data-label="Ações"]::before {
+    margin-bottom: 3px;
+  }
+
+  tbody td[data-label="Ações"] .table-action {
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  td:first-child {
+    min-width: 0;
+  }
+
+  .powered-by img {
+    width: 128px;
   }
 }
