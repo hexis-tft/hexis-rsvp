@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#17131d">
+  <meta name="description" content="Convite e confirmação de presença">
+  <title>Aniversário Natii</title>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <iframe id="hexis-bridge" title="Conexão segura" class="bridge" sandbox="allow-scripts allow-forms allow-same-origin"></iframe>
+
+  <header class="topbar">
+    <button id="home-button" class="brand" type="button" aria-label="Voltar ao convite">HÉXIS</button>
+    <button id="admin-button" class="link-button" type="button">Área da organização</button>
+  </header>
+
+  <main class="shell">
+    <section id="view-home" class="view active">
+      <article class="hero card">
+        <p class="eyebrow">SAVE THE DATE</p>
+        <h1 id="event-name">Aniversário Natii Neri</h1>
+        <p id="event-message" class="lead">Você faz parte desta comemoração.</p>
+        <dl class="event-grid">
+          <div><dt>Data</dt><dd id="event-date">A definir</dd></div>
+          <div><dt>Horário</dt><dd id="event-time">A definir</dd></div>
+          <div class="wide"><dt>Local</dt><dd id="event-place">A definir</dd></div>
+        </dl>
+        <button id="start-rsvp" class="primary" type="button">Confirmar presença</button>
+      </article>
+    </section>
+
+    <section id="view-phone" class="view">
+      <article class="card compact">
+        <button class="back" data-back="home" type="button">Voltar</button>
+        <p class="eyebrow">IDENTIFICAÇÃO</p>
+        <h2>Qual telefone está no convite?</h2>
+        <p class="muted">Informe o WhatsApp com DDD. O número será usado somente para localizar o convite.</p>
+        <form id="phone-form">
+          <label for="phone">WhatsApp</label>
+          <input id="phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="(11) 99999-9999" required>
+          <button class="primary" type="submit">Localizar convite</button>
+        </form>
+      </article>
+    </section>
+
+    <section id="view-invites" class="view">
+      <article class="card">
+        <button class="back" data-back="phone" type="button">Trocar telefone</button>
+        <p class="eyebrow">SEUS CONVITES</p>
+        <h2>Confirmação de presença</h2>
+        <div id="invite-list" class="stack"></div>
+      </article>
+    </section>
+
+    <section id="view-ticket" class="view">
+      <article class="card ticket-card">
+        <button class="back" data-back="invites" type="button">Voltar aos convites</button>
+        <p class="eyebrow">INGRESSO</p>
+        <h2 id="ticket-name"></h2>
+        <p id="ticket-party" class="muted"></p>
+        <div id="qrcode" class="qr" aria-label="QR Code do ingresso"></div>
+        <p class="notice">Apresente este QR Code na entrada. Ele é único e não deve ser compartilhado.</p>
+      </article>
+    </section>
+
+    <section id="view-admin-login" class="view">
+      <article class="card compact">
+        <button class="back" data-back="home" type="button">Voltar</button>
+        <p class="eyebrow">ÁREA RESTRITA</p>
+        <h2>Acesso da organização</h2>
+        <form id="admin-login-form">
+          <label for="admin-login">Login</label>
+          <input id="admin-login" autocomplete="username" required>
+          <label for="admin-password">Senha</label>
+          <input id="admin-password" type="password" autocomplete="current-password" required>
+          <button class="primary" type="submit">Entrar</button>
+        </form>
+      </article>
+    </section>
+
+    <section id="view-dashboard" class="view">
+      <article class="card admin-card">
+        <div class="admin-heading">
+          <div><p class="eyebrow">PAINEL</p><h2 id="admin-welcome">Organização</h2></div>
+          <button id="logout-button" class="link-button" type="button">Sair</button>
+        </div>
+        <div id="stats" class="stats"></div>
+        <nav class="admin-actions" aria-label="Ações administrativas">
+          <button id="scan-button" class="primary" type="button">Ler QR Code</button>
+          <button id="guests-button" class="secondary" type="button">Lista de convidados</button>
+        </nav>
+      </article>
+    </section>
+
+    <section id="view-guests" class="view">
+      <article class="card admin-card">
+        <button class="back" data-back="dashboard" type="button">Voltar ao painel</button>
+        <div class="list-heading"><div><p class="eyebrow">CONTROLE</p><h2>Convidados</h2></div><input id="guest-search" type="search" placeholder="Buscar nome ou telefone"></div>
+        <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Telefone</th><th>Resposta</th><th>Pessoas</th><th>Entrada</th></tr></thead><tbody id="guest-table"></tbody></table></div>
+      </article>
+    </section>
+
+    <section id="view-scan" class="view">
+      <article class="card compact">
+        <button class="back" data-back="dashboard" type="button">Voltar ao painel</button>
+        <p class="eyebrow">PORTARIA</p>
+        <h2>Leitura do ingresso</h2>
+        <div id="reader" class="reader"></div>
+        <form id="token-form">
+          <label for="qr-token">Código manual</label>
+          <input id="qr-token" autocomplete="off" placeholder="HX1:...">
+          <button class="secondary" type="submit">Consultar</button>
+        </form>
+        <div id="scan-result" class="stack"></div>
+      </article>
+    </section>
+  </main>
+
+  <div id="loading" class="loading" hidden><span></span><p>Processando…</p></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <script src="config.js"></script>
+  <script src="bridge-client.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

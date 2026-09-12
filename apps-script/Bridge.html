@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<head><base target="_top"></head>
+<body>
+<script>
+  (function () {
+    "use strict";
+    const channel = "HEXIS_RSVP_V1";
+    const allowedOrigin = <?!= JSON.stringify(allowedOrigin) ?>;
+    function send(message) { window.parent.postMessage(Object.assign({ channel }, message), allowedOrigin); }
+    window.addEventListener("message", function (event) {
+      if (event.origin !== allowedOrigin || event.source !== window.parent) return;
+      const data = event.data || {};
+      if (data.channel !== channel || data.type !== "REQUEST" || !data.id) return;
+      google.script.run
+        .withSuccessHandler(function (result) { send({ type: "RESPONSE", id: data.id, ok: true, result }); })
+        .withFailureHandler(function (error) { send({ type: "RESPONSE", id: data.id, ok: false, error: error && error.message ? error.message : "Falha no servidor." }); })
+        .rpc(JSON.stringify(data.request || {}));
+    });
+    send({ type: "READY" });
+  })();
+</script>
+</body>
+</html>
+
