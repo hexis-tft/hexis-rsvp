@@ -26,10 +26,11 @@
 .hero > .event-title-art {
   display: block !important;
   margin: 0 auto 4px !important;
-  font-family: "Segoe Script", "Brush Script MT", "Great Vibes", cursive !important;
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  font-style: italic !important;
   font-size: clamp(2.5rem, 5.1vw, 3.9rem) !important;
   line-height: 1 !important;
-  font-weight: 400 !important;
+  font-weight: 500 !important;
   color: #fff !important;
 }
 
