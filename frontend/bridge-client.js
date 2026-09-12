@@ -2,7 +2,7 @@
   "use strict";
 
   const CHANNEL = "HEXIS_RSVP_V1";
-  const pending = new Map();
+  const pending = new Map();.
 
   let bridgeFrame = null;
   let bridgeUrl = "";
