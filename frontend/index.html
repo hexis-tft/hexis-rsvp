@@ -85,22 +85,91 @@
     <section id="view-dashboard" class="view">
       <article class="card admin-card">
         <div class="admin-heading">
-          <div><p class="eyebrow">PAINEL</p><h2 id="admin-welcome">Organização</h2></div>
+          <div><p class="eyebrow">PAINEL</p><h2 id="admin-welcome">Organização</h2><p id="admin-profile" class="muted"></p></div>
           <button id="logout-button" class="link-button" type="button">Sair</button>
         </div>
         <div id="stats" class="stats"></div>
         <nav class="admin-actions" aria-label="Ações administrativas">
           <button id="scan-button" class="primary" type="button">Ler QR Code</button>
           <button id="guests-button" class="secondary" type="button">Lista de convidados</button>
+          <button id="new-guest-button" class="secondary gestor-only" type="button" hidden>Novo convidado</button>
+          <button id="users-button" class="secondary gestor-only" type="button" hidden>Usuários do sistema</button>
         </nav>
       </article>
     </section>
 
     <section id="view-guests" class="view">
-      <article class="card admin-card">
+      <article class="card admin-card wide-card">
         <button class="back" data-back="dashboard" type="button">Voltar ao painel</button>
-        <div class="list-heading"><div><p class="eyebrow">CONTROLE</p><h2>Convidados</h2></div><input id="guest-search" type="search" placeholder="Buscar nome ou telefone"></div>
-        <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Telefone</th><th>Resposta</th><th>Pessoas</th><th>Entrada</th></tr></thead><tbody id="guest-table"></tbody></table></div>
+        <div class="list-heading">
+          <div><p class="eyebrow">CONTROLE</p><h2>Convidados</h2></div>
+          <div class="list-tools"><input id="guest-search" type="search" placeholder="Buscar nome ou telefone"><button id="new-guest-list-button" class="secondary gestor-only" type="button" hidden>Novo convidado</button></div>
+        </div>
+        <div class="table-wrap">
+          <table><thead><tr><th>Nome</th><th>Telefone</th><th>Resposta</th><th>Pessoas</th><th>Entrada</th><th class="gestor-column">Ações</th></tr></thead><tbody id="guest-table"></tbody></table>
+        </div>
+      </article>
+    </section>
+
+    <section id="view-guest-editor" class="view">
+      <article class="card admin-card">
+        <button class="back" data-back="guests" type="button">Voltar aos convidados</button>
+        <p class="eyebrow">GESTÃO</p>
+        <h2 id="guest-editor-title">Novo convidado</h2>
+        <form id="guest-form">
+          <input id="guest-id" type="hidden">
+          <label for="guest-name">Nome</label>
+          <input id="guest-name" maxlength="120">
+          <label for="guest-entry-label">Identificação / observação</label>
+          <input id="guest-entry-label" maxlength="120">
+          <label for="guest-phone">WhatsApp</label>
+          <input id="guest-phone" inputmode="tel" placeholder="(11) 99999-9999">
+          <div class="form-grid two">
+            <div><label for="guest-adult">Maior de idade</label><select id="guest-adult"><option value="SIM">Sim</option><option value="NÃO">Não</option></select></div>
+            <div><label for="guest-active">Ativo</label><select id="guest-active"><option value="SIM">Sim</option><option value="NÃO">Não</option></select></div>
+          </div>
+          <div class="section-heading"><div><label>Acompanhantes</label><p class="muted small">Um nome por pessoa. A quantidade é calculada automaticamente.</p></div><button id="add-companion-button" class="secondary small-button" type="button">+ Adicionar</button></div>
+          <div id="companion-fields" class="companion-fields"></div>
+          <button class="primary" type="submit">Salvar convidado</button>
+        </form>
+        <section id="convert-box" class="admin-subsection" hidden>
+          <h3>Converter em acompanhante</h3>
+          <p class="muted">Desativa este convite e transfere o nome para outro convite ativo. A operação fica registrada no LOG_SISTEMA.</p>
+          <label for="convert-target">Convite de destino</label>
+          <select id="convert-target"></select>
+          <button id="convert-button" class="secondary danger-outline" type="button">Converter em acompanhante</button>
+        </section>
+      </article>
+    </section>
+
+    <section id="view-users" class="view">
+      <article class="card admin-card wide-card">
+        <button class="back" data-back="dashboard" type="button">Voltar ao painel</button>
+        <div class="list-heading"><div><p class="eyebrow">ACESSOS</p><h2>Usuários do sistema</h2></div><button id="new-user-button" class="secondary" type="button">Novo usuário</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Nome</th><th>Login</th><th>Perfil</th><th>Ativo</th><th>Último acesso</th><th>Ações</th></tr></thead><tbody id="user-table"></tbody></table></div>
+      </article>
+    </section>
+
+    <section id="view-user-editor" class="view">
+      <article class="card compact">
+        <button class="back" data-back="users" type="button">Voltar aos usuários</button>
+        <p class="eyebrow">ACESSO</p>
+        <h2 id="user-editor-title">Novo usuário</h2>
+        <form id="user-form">
+          <input id="user-id" type="hidden">
+          <label for="user-name">Nome</label>
+          <input id="user-name" maxlength="120" required>
+          <label for="user-login">Login</label>
+          <input id="user-login" autocomplete="off" required>
+          <label for="user-profile">Perfil</label>
+          <select id="user-profile"><option value="ADM_APP">Administrador</option><option value="GESTOR_APP">Gestor</option></select>
+          <label for="user-active">Ativo</label>
+          <select id="user-active"><option value="SIM">Sim</option><option value="NÃO">Não</option></select>
+          <label for="user-password">Senha <span id="password-hint" class="muted">(mínimo 10 caracteres)</span></label>
+          <input id="user-password" type="password" autocomplete="new-password">
+          <p class="muted small">Ao editar um usuário, deixe a senha em branco para mantê-la. Preencha para redefinir.</p>
+          <button class="primary" type="submit">Salvar usuário</button>
+        </form>
       </article>
     </section>
 
