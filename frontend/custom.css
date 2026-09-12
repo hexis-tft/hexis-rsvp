@@ -1,0 +1,49 @@
+.brand-art {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  min-width: 150px;
+}
+
+.brand-art img {
+  display: block;
+  width: 150px;
+  height: 58px;
+  object-fit: contain;
+}
+
+.event-title-art {
+  margin: 0 auto 4px;
+  font-size: clamp(2.45rem, 5.6vw, 4.15rem);
+  line-height: .95;
+  font-weight: 600;
+}
+
+.nati-signature {
+  display: block;
+  width: min(520px, 86%);
+  height: auto;
+  margin: 0 auto 18px;
+}
+
+@media (max-width: 740px) {
+  .brand-art {
+    min-width: 118px;
+  }
+
+  .brand-art img {
+    width: 118px;
+    height: 48px;
+  }
+
+  .event-title-art {
+    font-size: clamp(2.15rem, 10vw, 3.15rem);
+    margin-bottom: 0;
+  }
+
+  .nati-signature {
+    width: min(390px, 94%);
+    margin-bottom: 14px;
+  }
+}
