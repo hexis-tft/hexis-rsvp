@@ -83,7 +83,7 @@
   line-height: 1.35;
 }
 
-.invite > .status.confirmado {
+.invite > .status {
   display: flex;
   width: max-content;
   margin: 0 auto 14px;
