@@ -4,6 +4,7 @@
   justify-content: center;
   padding: 0;
   min-width: 150px;
+  transform: translateY(8px);
 }
 
 .brand-art img {
@@ -80,6 +81,22 @@
 
 .invite-name-list li {
   line-height: 1.35;
+}
+
+.invite > .status.confirmado {
+  display: flex;
+  width: max-content;
+  margin: 0 auto 14px;
+  justify-content: center;
+  text-align: center;
+}
+
+.rsvp-confirm:disabled,
+.rsvp-confirm.is-disabled {
+  opacity: .38;
+  filter: saturate(.45);
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* Toasted/modal único do app. */
@@ -170,6 +187,17 @@
   font-size: .82rem;
 }
 
+#view-ticket .ticket-card {
+  margin-top: 34px;
+}
+
+.ticket-signature {
+  display: block;
+  width: min(260px, 58%);
+  height: auto;
+  margin: 0 auto 18px;
+}
+
 /* Desktop */
 @media (min-width: 741px) {
   .invite-actions.checkin-buttons {
@@ -180,12 +208,13 @@
 /* MOBILE FIRST: prioridade do projeto. */
 @media (max-width: 740px) {
   .topbar {
-    min-height: 58px;
-    padding: 0 14px;
+    min-height: 66px;
+    padding: 4px 14px 0;
   }
 
   .brand-art {
     min-width: 112px;
+    transform: translateY(7px);
   }
 
   .brand-art img {
@@ -217,6 +246,15 @@
     width: 100% !important;
     max-width: 430px !important;
     margin: 0 auto 12px !important;
+  }
+
+  #view-ticket .ticket-card {
+    margin-top: 18px;
+  }
+
+  .ticket-signature {
+    width: min(200px, 62%);
+    margin-bottom: 14px;
   }
 
   .event-grid {
