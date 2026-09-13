@@ -285,7 +285,12 @@
           </div>
 
           <div class="invite-actions">
-            <button class="primary rsvp-confirm" type="button">Confirmar</button>
+            <button
+              class="primary rsvp-confirm${invite.status === "CONFIRMADO" ? " is-disabled" : ""}"
+              type="button"
+              ${invite.status === "CONFIRMADO" ? "disabled aria-disabled=\"true\"" : ""}>
+              Confirmar
+            </button>
             <button class="secondary rsvp-decline" type="button">Não poderei ir</button>
             ${invite.status === "CONFIRMADO"
               ? '<button class="secondary show-ticket" type="button">Ver QR Code</button>'
@@ -653,7 +658,7 @@
     state.adminSession ? loadDashboard() : show("admin-login")
   );
 
-  $$("[data-back]").forEach((button) => {
+  $$('[data-back]').forEach((button) => {
     button.addEventListener("click", async () => {
       const target = button.dataset.back;
 
